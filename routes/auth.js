@@ -2,6 +2,8 @@
 const express = require("express");
 const UserDao = require("../data/UserDao");
 const router = express.Router();
+const { verifyPassword } = require("../util/hashing");
+
 
 const users = new UserDao();
 
@@ -21,7 +23,9 @@ router.post("/authenticate", async(req, res) => {
     try {
         let { username, password } = req.body;
 
-        if (!username || !password) {
+        const isAuthenticated = await verifyPassword(password, user ? user.password : "");
+        
+        if (!isAuthenticated) {
             return res.status(400).json({
                 message: "You must provide both username and password"
             });

@@ -1,5 +1,7 @@
 const ApiError = require("../model/ApiError");
 const User = require("../model/User");
+const { hashPassword } = require("../util/hashing");
+
 
 
  /*
@@ -27,7 +29,9 @@ class UserDao {
             throw new ApiError(400, "Every user must have a valid role!");
         }      
 
-        const user = await User.create({ username, password, role })
+        const hash = await hashPassword(password);
+
+        const user = await User.create({ username, password: hash, role });
         return user;
     }
 
@@ -69,7 +73,6 @@ class UserDao {
     }
     
     async delete(id) {
-      
         const user = await User.findByIdAndDelete(id);
 
         if (user === null) {
