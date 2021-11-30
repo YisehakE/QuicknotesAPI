@@ -1,15 +1,7 @@
 const ApiError = require("../model/ApiError");
 const User = require("../model/User");
-const { hashPassword } = require("../util/hashing");
+const { hashPassword } = require("../server/util/hashing");
 
-
-
- /*
-    TIP(s):
-        - Most APIs follow this standard of 
-          returning whatever the API does back to user
-        - This class of D.A.O follows the MVC pattern
- */
 
 class UserDao {
 
@@ -19,7 +11,6 @@ class UserDao {
         if (username === undefined || username  === "") {
             throw new ApiError(400, "Every User must have a username");
         }
-
 
         if (password === undefined || password  === "") {
             throw new ApiError(400, "Every user must have a password!");
@@ -34,7 +25,6 @@ class UserDao {
         const user = await User.create({ username, password: hash, role });
         return user;
     }
-
 
     async read(id) {
         const user = await User.findById(id);
@@ -81,7 +71,6 @@ class UserDao {
         }
         return user;
     }
-
 }
 
 module.exports = UserDao; 

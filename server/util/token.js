@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 
-onst createToken = (user) => {
+const createToken = (user) => {
     return jwt.sign(
       {
         sub: user._id,
@@ -32,10 +32,17 @@ onst createToken = (user) => {
       );
     });
   };
+
+  const decodeToken = (token) => {
+    const decoded = jwt.decode(token);
+    return decoded;
+  }
   
   module.exports = {
     createToken,
     verifyToken,
+    decodeToken
+
   };
 
 
